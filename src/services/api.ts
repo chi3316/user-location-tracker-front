@@ -68,9 +68,10 @@ const mockLocationHistory: Record<string, LocationHistory> = {
 
 // 创建axios实例
 const api = axios.create({
-  baseURL: 'http://192.168.48.133:8080/api/v1',
+  baseURL: '/api/v1', // 交由 Vite proxy 转发
   timeout: 10000
 })
+
 
 function adaptUserInfo(raw: any): UserInfo {
   return {
