@@ -75,7 +75,7 @@
     userId: ''
   })
   
-  const exampleUserIds = ['user001', 'user002', 'user003']
+  const exampleUserIds = ['c5f28a9b-fa83-4a7e-b5c2-1e8d6c9f0a41', '40fd3e1efd-02bc-48e6-80bf-9498ac7b7b40']
   
   const rules: FormRules = {
     userId: [
