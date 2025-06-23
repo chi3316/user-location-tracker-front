@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { UserInfo, LocationHistory, ApiResponse } from '@/types'
 
-// 模拟用户数据
+// eslint-disable-next-line
 const mockUsers: Record<string, UserInfo> = {
   'user001': {
     userId: 'user001',
@@ -68,9 +68,23 @@ const mockLocationHistory: Record<string, LocationHistory> = {
 
 // 创建axios实例
 const api = axios.create({
-  baseURL: 'https://60dc-221-4-34-36.ngrok-free.app/api/v1',
+  baseURL: 'http://192.168.48.133:8080/api/v1',
   timeout: 10000
 })
+
+function adaptUserInfo(raw: any): UserInfo {
+  return {
+    userId: raw.userId,
+    age: raw.age,
+    gender: raw.gender === '男' ? 'male' : raw.gender === '女' ? 'female' : 'other',
+    currentLocation: {
+      latitude: raw.latitude,
+      longitude: raw.longitude,
+      region: raw.region
+    },
+    lastUpdateTime: typeof raw.lastUpdate === 'number' ? new Date(raw.lastUpdate).toISOString() : raw.lastUpdate
+  }
+}
 
 // 用户位置查询API
 export const userLocationApi = {
@@ -79,9 +93,11 @@ export const userLocationApi = {
     const res = await api.get(`/users/coordinates/${userId}`)
     return {
       success: true,
-      data: res.data
+      data: adaptUserInfo(res.data)
     }
   },
+
+  
 
   // 获取用户位置历史
   async getUserLocationHistory(userId: string): Promise<ApiResponse<LocationHistory>> {
